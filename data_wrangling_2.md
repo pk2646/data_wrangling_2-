@@ -28,3 +28,38 @@ tab_marij =
   slice(-1) %>% 
   as_tibble()
 ```
+
+## Non- table collection of data from a website
+
+Star wars movie info
+
+``` r
+url = "https://www.imdb.com/list/ls070150896/"
+
+star_wars_html = read_html(url)
+```
+
+Grab elements that I want
+
+``` r
+title_vector =
+  star_wars_html %>% 
+  html_nodes(css = ".lister-item-header a") %>% 
+  html_text()
+
+grossrev_vector =
+  star_wars_html %>% 
+  html_nodes(css = ".text-small:nth-child(7) span:nth-child(5)") %>% 
+  html_text()
+
+runtime_vector =
+  star_wars_html %>% 
+  html_nodes(css = ".runtime") %>% 
+  html_text()
+
+swm_df = 
+  tibble(
+    title = title_vector,
+    gross_rev = grossrev_vector,
+    runtime = runtime_vector)
+```
